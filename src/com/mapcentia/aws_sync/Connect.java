@@ -9,6 +9,8 @@ import java.sql.DriverManager;
 public final class Connect {
 
     private static String url;
+    private static String user;
+    private static String pw;
 
     public String getUrl() {
         return url;
@@ -18,8 +20,16 @@ public final class Connect {
         this.url = url;
     }
 
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public void setPw(String pw) {
+        this.pw = pw;
+    }
+
     static Connection open() throws Exception {
-        Connection c = DriverManager.getConnection(url, "gc2", "1234");
+        Connection c = DriverManager.getConnection(url, user, pw);
         return c;
     }
 }
