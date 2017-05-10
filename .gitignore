@@ -2,3 +2,8 @@
 /lib/
 /.idea/
 /out/
+.idea/artifacts/
+.idea/workspace.xml
+bin/
+out/
+src/META-INF/
