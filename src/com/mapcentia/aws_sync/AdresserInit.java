@@ -19,8 +19,11 @@ final class AdresserInit extends Stream {
      */
     void get(int sekvensNummer) throws Exception {
 
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "adresser";
+
         try {
-            this.createTabel();
+            this.createTabel(rel);
         } catch (Exception e) {
 
         }
@@ -31,7 +34,7 @@ final class AdresserInit extends Stream {
 
         Connection c = Connect.open();
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.adresser VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -70,8 +73,8 @@ final class AdresserInit extends Stream {
     /**
      * @throws Exception
      */
-    private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.adresser " +
+    private void createTabel(String rel) throws Exception {
+        String sql = "CREATE TABLE " + rel + " " +
                 "(id                    uuid            PRIMARY KEY     NOT NULL, " +
                 " status                int                                     , " +
                 " oprettet              timestamp                               , " +

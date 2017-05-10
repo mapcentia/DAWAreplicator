@@ -16,17 +16,24 @@ final class VejstykkerInit extends Stream {
      * @throws Exception
      */
     void get(int sekvensNummer) throws Exception {
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "vejstykker";
+
         try {
-            this.createTabel();
+            this.createTabel(rel);
         } catch (Exception e) {
 
         }
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/vejstykker?sekvensnummertil=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        Connection c = Connect.open();
+
+        Connect connect = new Connect();
+        Connection c = connect.open();
+
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.vejstykker VALUES(?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -41,10 +48,10 @@ final class VejstykkerInit extends Stream {
             System.out.print("\rIndsætter vejstykker... " + lineCount);
             System.out.flush();
 
-            pstmt.setString(n + 1,  arr[n]); // kode
-            pstmt.setString(++n + 1,  arr[n]); // kommunekode
-            pstmt.setString(++n + 1,  arr[n]); // navn
-            pstmt.setString(++n + 1,  arr[n]); // adresseringsnavn
+            pstmt.setString(n + 1, arr[n]); // kode
+            pstmt.setString(++n + 1, arr[n]); // kommunekode
+            pstmt.setString(++n + 1, arr[n]); // navn
+            pstmt.setString(++n + 1, arr[n]); // adresseringsnavn
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // oprettet
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // aendret
             pstmt.executeUpdate();
@@ -59,16 +66,18 @@ final class VejstykkerInit extends Stream {
     /**
      *
      */
-    private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.vejstykker " +
-                "(kode              varchar(255)    PRIMARY KEY    NOT NULL, " +
+    private void createTabel(String rel) throws Exception {
+        String sql = "CREATE TABLE " + rel + " " +
+                "(kode              varchar(255)                   NOT NULL, " +
                 " kommunekode       varchar(255)                   NOT NULL, " +
                 " navn              varchar(255)                   NOT NULL, " +
                 " adresseringsnavn  varchar(255)                           , " +
                 " oprettet          timestamp                              , " +
                 " aendret           timestamp                               )";
 
-        Connection c = Connect.open();
+        Connect connect = new Connect();
+        Connection c = connect.open();
+
         Statement stmt = c.createStatement();
         stmt.executeUpdate(sql);
         stmt.close();

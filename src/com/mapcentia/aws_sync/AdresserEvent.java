@@ -1,6 +1,7 @@
 package com.mapcentia.aws_sync;
 
 import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -14,7 +15,6 @@ import java.util.UUID;
 final class AdresserEvent extends Stream {
 
     /**
-     *
      * @param sekvensNummerFra
      * @param sekvensNummerTil
      * @param c
@@ -22,7 +22,11 @@ final class AdresserEvent extends Stream {
      * @throws Exception
      */
     AdresserObj[] get(int sekvensNummerFra, int sekvensNummerTil, Connection c) throws Exception {
-        String url = "http://dawa.aws.dk/replikering/adresser/haendelser?sekvensnummerfra=" + (sekvensNummerFra +1) + "&sekvensnummertil=" + sekvensNummerTil;
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "adresser";
+
+        String url = "http://dawa.aws.dk/replikering/adresser/haendelser?sekvensnummerfra=" + (sekvensNummerFra + 1) + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);
@@ -51,9 +55,9 @@ final class AdresserEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM replika.adresser WHERE id=?");
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO replika.adresser VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE replika.adresser SET status=?, oprettet=?, aendret=?," +
+        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, oprettet=?, aendret=?," +
                 "ikrafttraedelsesdato=?, etage=?, doer=?, adgangsadresseid=?, kilde=?, esdhreference=?, journalnummer=?  WHERE id=?");
 
         // Execute
@@ -137,13 +141,13 @@ final class AdresserEvent extends Stream {
             String journalnummer;
 
         }
+
         String operation;
         String tidspunkt;
         Integer sekvensnummer;
         AdresserEvent.AdresserObj.DataObj data;
 
         /**
-         *
          * @param operation
          * @param tidspunkt
          * @param sekvensnummer

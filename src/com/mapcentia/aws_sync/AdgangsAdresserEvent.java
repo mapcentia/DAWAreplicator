@@ -24,6 +24,10 @@ final class AdgangsAdresserEvent extends Stream {
      * @throws Exception
      */
     AdgangsAdresserObj[] get(int sekvensNummerFra, int sekvensNummerTil, Connection c) throws Exception {
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "adgangsadresser";
+
         String url = "http://dawa.aws.dk/replikering/AdgangsAdresser/haendelser?sekvensnummerfra=" + (sekvensNummerFra +1) + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
@@ -53,9 +57,9 @@ final class AdgangsAdresserEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM replika.AdgangsAdresser WHERE id=?");
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO replika.AdgangsAdresser VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE replika.AdgangsAdresser SET status=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, oprettet=?, aendret=?," +
+        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, oprettet=?, aendret=?," +
                 "ikrafttraedelsesdato=?,  ejerlavkode=?, matrikelnr=?, esrejendomsnr=?, etrs89koordinat_oest=?, etrs89koordinat_nord=?, hoejde=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
                 "tekstretning=?, esdhreference=?, journalnummer=?, adressepunktaendringsdato=?, the_geom=? WHERE id=?");
 

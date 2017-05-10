@@ -20,8 +20,11 @@ final class EjerlavInit extends Stream {
      */
     void get(int sekvensNummer) throws Exception {
 
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "ejerlav";
+
         try {
-            this.createTabel();
+            this.createTabel(rel);
         } catch (Exception e) {
 
         }
@@ -32,7 +35,7 @@ final class EjerlavInit extends Stream {
 
         Connection c = Connect.open();
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.ejerlav VALUES(?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -46,8 +49,8 @@ final class EjerlavInit extends Stream {
             String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             System.out.print("\rIndsætter ejerlav... " + lineCount);
             System.out.flush();
-            pstmt.setString(n + 1,  arr[n]); // kode
-            pstmt.setString(++n + 1,  arr[n].replace("\"", "")); // navn
+            pstmt.setString(n + 1, arr[n]); // kode
+            pstmt.setString(++n + 1, arr[n].replace("\"", "")); // navn
 
             pstmt.executeUpdate();
             lineCount++;
@@ -61,8 +64,8 @@ final class EjerlavInit extends Stream {
     /**
      * @throws Exception
      */
-    private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.ejerlav " +
+    private void createTabel(String rel) throws Exception {
+        String sql = "CREATE TABLE " + rel + " " +
                 "(kode      varchar(255)        PRIMARY KEY     NOT NULL, " +
                 " navn      varchar(255)                                 )";
 

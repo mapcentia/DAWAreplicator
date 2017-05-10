@@ -1,6 +1,7 @@
 package com.mapcentia.aws_sync;
 
 import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -13,14 +14,17 @@ import java.sql.PreparedStatement;
 final class PostnumreEvent extends Stream {
 
     /**
-     *
      * @param sekvensNummerFra
      * @param sekvensNummerTil
      * @return
      * @throws Exception
      */
     PostnumreObj[] get(int sekvensNummerFra, int sekvensNummerTil, Connection c) throws Exception {
-        String url = "http://dawa.aws.dk/replikering/postnumre/haendelser?sekvensnummerfra=" + sekvensNummerFra +"&sekvensnummertil=" + sekvensNummerTil;
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "postnumre";
+
+        String url = "http://dawa.aws.dk/replikering/postnumre/haendelser?sekvensnummerfra=" + sekvensNummerFra + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);
@@ -49,9 +53,9 @@ final class PostnumreEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO replika.postnumre VALUES(?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE replika.postnumre SET nr=?, navn=?, stormodtager=? WHERE nr=?");
-        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM replika.postnumre WHERE nr=?");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?)");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET nr=?, navn=?, stormodtager=? WHERE nr=?");
+        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM  " + rel + " WHERE nr=?");
 
         // Execute
         // =======
@@ -106,13 +110,13 @@ final class PostnumreEvent extends Stream {
             String navn;
             String stormodtager;
         }
+
         String operation;
         String tidspunkt;
         Integer sekvensnummer;
         DataObj data;
 
         /**
-         *
          * @param operation
          * @param tidspunkt
          * @param sekvensnummer

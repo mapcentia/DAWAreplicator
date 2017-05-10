@@ -1,6 +1,7 @@
 package com.mapcentia.aws_sync;
 
 import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -14,7 +15,6 @@ import java.util.UUID;
 final class VejstykkerEvent extends Stream {
 
     /**
-     *
      * @param sekvensNummerFra
      * @param sekvensNummerTil
      * @param c
@@ -22,7 +22,11 @@ final class VejstykkerEvent extends Stream {
      * @throws Exception
      */
     VejstykkerObj[] get(int sekvensNummerFra, int sekvensNummerTil, Connection c) throws Exception {
-        String url = "http://dawa.aws.dk/replikering/vejstykker/haendelser?sekvensnummerfra=" + (sekvensNummerFra +1) + "&sekvensnummertil=" + sekvensNummerTil;
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "vejstykker";
+
+        String url = "http://dawa.aws.dk/replikering/vejstykker/haendelser?sekvensnummerfra=" + (sekvensNummerFra + 1) + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);
@@ -51,9 +55,9 @@ final class VejstykkerEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO replika.vejstykker VALUES(?, ?, ?, ?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE replika.vejstykker SET kommunekode=?, navn=?, adresseringsnavn=?, oprettet=?, aendret=? WHERE kode=?");
-        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM replika.vejstykker WHERE kode=?");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET kommunekode=?, navn=?, adresseringsnavn=?, oprettet=?, aendret=? WHERE kode=?");
+        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=?");
 
         // Execute
         // =======
@@ -120,13 +124,13 @@ final class VejstykkerEvent extends Stream {
             String oprettet;
             String ændret;
         }
+
         String operation;
         String tidspunkt;
         Integer sekvensnummer;
         VejstykkerEvent.VejstykkerObj.DataObj data;
 
         /**
-         *
          * @param operation
          * @param tidspunkt
          * @param sekvensnummer

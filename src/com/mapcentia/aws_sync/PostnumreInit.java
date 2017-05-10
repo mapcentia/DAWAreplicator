@@ -16,8 +16,12 @@ final class PostnumreInit extends Stream {
      * @throws Exception
      */
     void get(int sekvensNummer) throws Exception {
+
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "postnumre";
+
         try {
-            this.createTabel();
+            this.createTabel(rel);
         } catch (Exception e) {
 
         }
@@ -25,9 +29,12 @@ final class PostnumreInit extends Stream {
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/postnumre?sekvensnummertil=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        Connection c = Connect.open();
+
+        Connect connect = new Connect();
+        Connection c = connect.open();
+
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.postnumre VALUES(?, ?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?)");
         boolean first = true;
         int n = 0;
         int lineCount = 0;
@@ -42,7 +49,7 @@ final class PostnumreInit extends Stream {
             System.out.print("\rIndsætter postnumre... " + lineCount);
             System.out.flush();
 
-            pstmt.setString(n + 1,  arr[n]); // kode
+            pstmt.setString(n + 1, arr[n]); // kode
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // kommunekode
             pstmt.setBoolean(++n + 1, (arr.length > n) && (arr[n] != "1"));
             pstmt.executeUpdate();
@@ -55,16 +62,17 @@ final class PostnumreInit extends Stream {
     }
 
     /**
-     *
      * @throws Exception
      */
-    private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.postnumre " +
+    private void createTabel(String rel) throws Exception {
+        String sql = "CREATE TABLE " + rel + " " +
                 "(nr                varchar(255)   PRIMARY KEY     NOT NULL, " +
                 " navn              varchar(255)                   NOT NULL, " +
                 " stormodtager      bool                                    )";
 
-        Connection c = Connect.open();
+        Connect connect = new Connect();
+        Connection c = connect.open();
+
         Statement stmt = c.createStatement();
         stmt.executeUpdate(sql);
         stmt.close();

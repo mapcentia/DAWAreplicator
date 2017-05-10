@@ -15,6 +15,13 @@ import java.sql.ResultSet;
  */
 final class Sekvens extends Stream {
 
+    private String rel;
+
+    Sekvens() {
+        Configuration configuration = new Configuration();
+        this.rel = configuration.getSchema() + "." + "sekvens";
+    }
+
     /**
      * @throws Exception
      */
@@ -57,7 +64,7 @@ final class Sekvens extends Stream {
     }
 
     int getLastFromDb() throws Exception {
-        String sql = "select * from replika.sekvens ORDER BY id DESC limit 1";
+        String sql = "select * from " + rel + " ORDER BY id DESC limit 1";
         Connection c = Connect.open();
         Statement stmt = c.createStatement();
         ResultSet rs = stmt.executeQuery(sql);
@@ -70,7 +77,7 @@ final class Sekvens extends Stream {
 
     void storeInDb(int val) throws Exception {
         Connection c = Connect.open();
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.sekvens(val) VALUES(?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + "(val) VALUES(?)");
         pstmt.setInt(1, val);
         pstmt.executeUpdate();
         pstmt.close();
@@ -81,7 +88,7 @@ final class Sekvens extends Stream {
      * @throws Exception
      */
     private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.sekvens " +
+        String sql = "CREATE TABLE " + rel + " " +
                 "(id   serial   PRIMARY KEY     NOT NULL, " +
                 " val  int                      NOT NULL )";
 
@@ -89,7 +96,7 @@ final class Sekvens extends Stream {
         Statement stmt = c.createStatement();
         stmt.executeUpdate(sql);
 
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.sekvens(val) VALUES(?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + "(val) VALUES(?)");
         pstmt.setInt(1, 0);
         pstmt.executeUpdate();
 

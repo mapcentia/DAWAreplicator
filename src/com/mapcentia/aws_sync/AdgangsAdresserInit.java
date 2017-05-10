@@ -19,8 +19,11 @@ final class AdgangsAdresserInit extends Stream {
      */
     void get(int sekvensNummer) throws Exception {
 
+        Configuration configuration = new Configuration();
+        String rel = configuration.getSchema() + "." + "adgangsadresser";
+
         try {
-            this.createTabel();
+            this.createTabel(rel);
         } catch (Exception e) {
 
         }
@@ -31,7 +34,8 @@ final class AdgangsAdresserInit extends Stream {
 
         Connection c = Connect.open();
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO replika.adgangsadresser VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -96,8 +100,8 @@ final class AdgangsAdresserInit extends Stream {
     /**
      * @throws Exception
      */
-    private void createTabel() throws Exception {
-        String sql = "CREATE TABLE replika.adgangsadresser " +
+    private void createTabel(String rel) throws Exception {
+        String sql = "CREATE TABLE " + rel + " " +
                 "(id                        uuid            PRIMARY KEY     NOT NULL, " +
                 " status                    int                                     , " +
                 " kommunekode               varchar(255)                            , " +
