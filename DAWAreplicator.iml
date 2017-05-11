@@ -24,7 +24,9 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/postgis-jdbc-1.3.3.jar!/" />
           <root url="jar://$MODULE_DIR$/lib/postgis-stubs-1.3.3.jar!/" />
-          <root url="jar://$MODULE_DIR$/lib/postgresql-8.3-603.jdbc4.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/postgis-jdbc-1.3.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/postgis-stubs-1.3.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/postgresql-9.4-1206.jdbc41.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -36,10 +38,13 @@
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/snakeyaml-1.181.jar!/" />
           <root url="jar://$MODULE_DIR$/lib/snakeyaml-1.18.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/snakeyaml-1.18.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/snakeyaml-1.18.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.postgresql:postgresql:9.4-1206-jdbc41" level="project" />
   </component>
 </module>
