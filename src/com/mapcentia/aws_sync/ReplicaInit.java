@@ -27,7 +27,7 @@ final class ReplicaInit {
             System.out.println();
         }
 
-        // Get postnumre
+/*        // Get postnumre
         PostnumreInit postnumre = new PostnumreInit();
         postnumre.get(res.sekvensnummer);
 
@@ -49,7 +49,7 @@ final class ReplicaInit {
         AdresserInit adresser = new AdresserInit();
         adresser.get(res.sekvensnummer);
 
-        System.out.println();
+        System.out.println();*/
 
         // Get adgangsadresser
         AdgangsAdresserInit adgangsAdresser = new AdgangsAdresserInit();

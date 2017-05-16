@@ -60,7 +60,7 @@ final class AdgangsAdresserEvent extends Stream {
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
         PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, oprettet=?, aendret=?," +
-                "ikrafttraedelsesdato=?,  ejerlavkode=?, matrikelnr=?, esrejendomsnr=?, etrs89koordinat_oest=?, etrs89koordinat_nord=?, hoejde=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
+                "ikrafttraedelsesdato=?,  ejerlavkode=?, matrikelnr=?, esrejendomsnr=?, adgangspunktid=?, etrs89koordinat_oest=?, etrs89koordinat_nord=?, hoejde=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
                 "tekstretning=?, esdhreference=?, journalnummer=?, adressepunktaendringsdato=?, the_geom=? WHERE id=?");
 
         // Execute
@@ -84,6 +84,7 @@ final class AdgangsAdresserEvent extends Stream {
                     pstmtInsert.setString(++n + 1, (item.data.ejerlavkode != null) ? item.data.ejerlavkode : null); // ejerlavkode
                     pstmtInsert.setString(++n + 1, (item.data.matrikelnr != null) ? item.data.matrikelnr : null); // matrikelnr
                     pstmtInsert.setString(++n + 1, (item.data.esrejendomsnr != null) ? item.data.esrejendomsnr : null); // esrejendomsnr
+                    pstmtInsert.setObject(++n + 1, (item.data.esrejendomsnr != null) ? UUID.fromString(item.data.esrejendomsnr) : null); // adgangspunktid
                     pstmtInsert.setFloat(++n + 1, (item.data.etrs89koordinat_øst != null) ? Float.valueOf(item.data.etrs89koordinat_øst) : 0); // etrs89koordinat_oest
                     pstmtInsert.setFloat(++n + 1, (item.data.etrs89koordinat_nord != null) ? Float.valueOf(item.data.etrs89koordinat_nord) : 0); // etrs89koordinat_nord
                     pstmtInsert.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde
@@ -124,6 +125,7 @@ final class AdgangsAdresserEvent extends Stream {
                     pstmtUpdate.setString(++n + 1, (item.data.ejerlavkode != null) ? item.data.ejerlavkode : null); // ejerlavkode
                     pstmtUpdate.setString(++n + 1, (item.data.matrikelnr != null) ? item.data.matrikelnr : null); // matrikelnr
                     pstmtUpdate.setString(++n + 1, (item.data.esrejendomsnr != null) ? item.data.esrejendomsnr : null); // esrejendomsnr
+                    pstmtUpdate.setObject(++n + 1, (item.data.esrejendomsnr != null) ?  UUID.fromString(item.data.esrejendomsnr)  : null); // adgangspunktid
                     pstmtUpdate.setFloat(++n + 1, (item.data.etrs89koordinat_øst != null) ? Float.valueOf(item.data.etrs89koordinat_øst) : 0); // etrs89koordinat_oest
                     pstmtUpdate.setFloat(++n + 1, (item.data.etrs89koordinat_nord != null) ? Float.valueOf(item.data.etrs89koordinat_nord) : 0); // etrs89koordinat_nord
                     pstmtUpdate.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde

@@ -35,7 +35,7 @@ final class AdgangsAdresserInit extends Stream {
         Connection c = Connect.open();
         c.setAutoCommit(false);
 
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -63,6 +63,7 @@ final class AdgangsAdresserInit extends Stream {
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // ejerlavkode
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // matrikelnr
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // esrejendomsnr
+            pstmt.setObject(++n + 1, (arr[n].length() > 0) ? UUID.fromString(arr[n]) : null); // adgangspunktid
             pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_oest
             pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_nord
             pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // hoejde
@@ -78,10 +79,10 @@ final class AdgangsAdresserInit extends Stream {
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
 
             // Create geometry
-            if (arr[13].length() > 0 && arr[14].length() > 0) {
+            if (arr[14].length() > 0 && arr[15].length() > 0) {
                 Point point = new Point();
-                point.setX(Float.valueOf(arr[13]));
-                point.setY(Float.valueOf(arr[14]));
+                point.setX(Float.valueOf(arr[14]));
+                point.setY(Float.valueOf(arr[15]));
                 point.setSrid(25832);
                 PGgeometry geom = new PGgeometry(point);
                 pstmt.setObject(++n + 1, geom); // the_geom
@@ -115,6 +116,7 @@ final class AdgangsAdresserInit extends Stream {
                 " ejerlavkode               varchar(255)                            , " +
                 " matrikelnr                varchar(255)                            , " +
                 " esrejendomsnr             varchar(255)                            , " +
+                " adgangspunktid            uuid                                    , " +
                 " etrs89koordinat_oest      float                                   , " +
                 " etrs89koordinat_nord      float                                   , " +
                 " hoejde                    float                                   , " +
