@@ -4,7 +4,7 @@ Repliker hele Danmarks Adresseregister, DAR, til lokal database og hold den opda
 ## Hvordan bruges replikatoren
 Replikatoren er et kommandolinje-værktøj skrevet i Java og derfor kan anvendes på alle platforme (Windows, Linux, Mac mv.)
  
-Pt. er det kun PostgreSQL databaseserveren, som er understøttet.
+Pt. er det kun PostgreSQL database-serveren, som er understøttet.
 
 ### Forudsætninger
 - Et Java 8 Runtime
@@ -12,9 +12,9 @@ Pt. er det kun PostgreSQL databaseserveren, som er understøttet.
 
 ### Installering
 - Hent zip filen på: https://github.com/mapcentia/DAWAreplicator/archive/master.zip
-- Udpak den
-- Kopiere DAWAreplicator-master/bin/DAWAreplicator.jar til hvor du vil have den
-- opret en konfigurationsfil (kan lægges i samme folder som jar-filen ), kald den fx config.yml kopiere dette til den og ret til:
+- Udpak den.
+- Kopiere DAWAreplicator-master/bin/DAWAreplicator.jar til der, hvor du vil have den.
+- opret en konfigurationsfil (kan lægges i samme folder som jar-filen ), kald den fx config.yml, kopiere dette til den og ret til:
 
 
 
