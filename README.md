@@ -1,7 +1,7 @@
 # Repliker hele Danmarks Adresseregister
 Repliker hele Danmarks Adresseregister, DAR, til lokal database og hold den opdateret i nær realtid.
 
-##Hvordan bruges replikatoren
+## Hvordan bruges replikatoren
 Replikatoren er et kommandolinje-værktøj skrevet i Java og derfor kan anvendes på alle platforme (Windows, Linux, Mac mv.)
  
 Pt. er det kun PostgreSQL databaseserveren, som er understøttet.
