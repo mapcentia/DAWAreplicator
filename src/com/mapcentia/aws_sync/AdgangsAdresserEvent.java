@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by mh on 03/02/17.
@@ -34,7 +35,7 @@ final class AdgangsAdresserEvent extends Stream {
         HttpURLConnection con = this.start(url);
         String inputLine;
         StringBuffer response = new StringBuffer();
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
         while ((inputLine = in.readLine()) != null) {
             response.append(inputLine);
@@ -58,7 +59,7 @@ final class AdgangsAdresserEvent extends Stream {
         // ==================
 
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, oprettet=?, aendret=?," +
                 "ikrafttraedelsesdato=?,  ejerlavkode=?, matrikelnr=?, esrejendomsnr=?, adgangspunktid=?, etrs89koordinat_oest=?, etrs89koordinat_nord=?, hoejde=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
                 "tekstretning=?, esdhreference=?, journalnummer=?, adressepunktaendringsdato=?, the_geom=? WHERE id=?");
@@ -71,7 +72,7 @@ final class AdgangsAdresserEvent extends Stream {
             switch (item.operation) {
                 case "insert":
                     //System.out.println(item.operation);
-                    pstmtInsert.setObject(n + 1, UUID.fromString(item.data.id)); // id
+                    pstmtInsert.setObject(n + 1, item.data.id); // id
                     pstmtInsert.setInt(++n + 1, item.data.status); // status
                     pstmtInsert.setString(++n + 1, (item.data.kommunekode != null) ? item.data.kommunekode : null); // kommunekode
                     pstmtInsert.setString(++n + 1, (item.data.vejkode != null) ? item.data.vejkode : null); // vejkode
@@ -149,7 +150,7 @@ final class AdgangsAdresserEvent extends Stream {
                     } else {
                         pstmtUpdate.setObject(++n + 1, null); // the_geom
                     }
-                    pstmtUpdate.setString(++n + 1, item.data.id); // id
+                    pstmtUpdate.setObject(++n + 1, item.data.id); // id
                     pstmtUpdate.executeUpdate();
                     cUpdate++;
                     break;
@@ -182,7 +183,7 @@ final class AdgangsAdresserEvent extends Stream {
          *
          */
         class DataObj {
-            String id;
+            UUID id;
             int status;
             String kommunekode;
             String vejkode;

@@ -29,7 +29,7 @@ final class EjerlavInit extends Stream {
 
         }
 
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/ejerlav?sekvensnummertil=" + sekvensNummer + "&format=csv");
+        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/ejerlav?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 

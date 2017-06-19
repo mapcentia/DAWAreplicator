@@ -28,9 +28,9 @@ final class AdgangsAdresserInit extends Stream {
 
         }
 
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/adgangsadresser?sekvensnummertil=" + sekvensNummer + "&format=csv");
+        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/adgangsadresser?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
         Connection c = Connect.open();
         c.setAutoCommit(false);

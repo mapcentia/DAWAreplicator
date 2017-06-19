@@ -25,7 +25,7 @@ final class VejstykkerInit extends Stream {
         } catch (Exception e) {
 
         }
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/vejstykker?sekvensnummertil=" + sekvensNummer + "&format=csv");
+        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/vejstykker?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
