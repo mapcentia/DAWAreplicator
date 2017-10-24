@@ -57,8 +57,8 @@ final class VejstykkerEvent extends Stream {
         // ==================
 
         PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET kommunekode=?, navn=?, adresseringsnavn=?, oprettet=?, aendret=? WHERE kode=?");
-        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=?");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET kommunekode=?, navn=?, adresseringsnavn=?, oprettet=?, aendret=? WHERE kode=? AND kommunekode=?");
+        PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=? AND kommunekode=?");
 
         // Execute
         // =======
@@ -85,12 +85,14 @@ final class VejstykkerEvent extends Stream {
                     pstmtUpdate.setTimestamp(++n + 1, (item.data.oprettet != null) ? java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", "")) : null); // oprettet
                     pstmtUpdate.setTimestamp(++n + 1, (item.data.ændret != null) ? java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", "")) : null); // aendret
                     pstmtUpdate.setString(++n + 1, item.data.kode); // kode
+                    pstmtUpdate.setString(++n + 1, item.data.kommunekode); // kommunekode
                     cUpdate++;
                     pstmtUpdate.executeUpdate();
                     break;
                 case "delete":
                     //System.out.println(item.data);
-                    pstmtDelete.setString(1, item.data.kode); // kode
+                    pstmtDelete.setString(n + 1, item.data.kode); // kode
+                    pstmtDelete.setString(++n + 1, item.data.kommunekode); // kommunekode
                     pstmtDelete.executeUpdate();
                     cDelete++;
                     break;
