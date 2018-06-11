@@ -48,12 +48,12 @@ final class VejstykkerInit extends Stream {
             System.out.print("\rIndsætter vejstykker... " + lineCount);
             System.out.flush();
 
-            pstmt.setString(n + 1, arr[n]); // kode
-            pstmt.setString(++n + 1, arr[n]); // kommunekode
-            pstmt.setString(++n + 1, arr[n]); // navn
-            pstmt.setString(++n + 1, arr[n]); // adresseringsnavn
+            pstmt.setString(n + 1, arr[n]); // kommunekode
+            pstmt.setString(++n + 1, arr[n]); // kode
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // oprettet
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // aendret
+            pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // navn
+            pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // adresseringsnavn
             pstmt.executeUpdate();
             lineCount++;
         }
@@ -68,12 +68,12 @@ final class VejstykkerInit extends Stream {
      */
     private void createTabel(String rel) throws Exception {
         String sql = "CREATE TABLE " + rel + " " +
-                "(kode              varchar(255)                   NOT NULL, " +
-                " kommunekode       varchar(255)                   NOT NULL, " +
-                " navn              varchar(255)                   NOT NULL, " +
-                " adresseringsnavn  varchar(255)                           , " +
+                "(kommunekode       varchar(255)                   NOT NULL, " +
+                " kode              varchar(255)                   NOT NULL, " +
                 " oprettet          timestamp                              , " +
-                " aendret           timestamp                               )";
+                " aendret           timestamp                              , " +
+                " navn              varchar(255)                           , " +
+                " adresseringsnavn  varchar(255)                            ) ";
 
         Connect connect = new Connect();
         Connection c = connect.open();

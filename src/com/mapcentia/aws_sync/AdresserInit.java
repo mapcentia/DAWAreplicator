@@ -3,11 +3,8 @@ package com.mapcentia.aws_sync;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.UUID;
+import java.sql.*;
+import java.util.*;
 
 /**
  * Created by mh on 27/10/16.
@@ -49,14 +46,14 @@ final class AdresserInit extends Stream {
             System.out.print("\rIndsætter adresser... " + lineCount);
             System.out.flush();
 
-            pstmt.setObject(n + 1, UUID.fromString(arr[n])); // id
+            pstmt.setObject(n + 1, UUID.fromString(arr[n]), Types.OTHER); // id
             pstmt.setInt(++n + 1, Integer.valueOf(arr[n])); // status
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // oprettet
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // aendret
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
+            pstmt.setObject(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // adgangsadresseid
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // etage
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // doer
-            pstmt.setObject(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? UUID.fromString(arr[n]) : null); // adgangsadresseid
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // kilde
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // esdhreference
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // journalnummer
@@ -80,9 +77,9 @@ final class AdresserInit extends Stream {
                 " oprettet              timestamp                               , " +
                 " aendret               timestamp                               , " +
                 " ikrafttraedelsesdato  timestamp                               , " +
+                " adgangsadresseid      uuid                                    , " +
                 " etage                 varchar(255)                            , " +
                 " doer                  varchar(255)                            , " +
-                " adgangsadresseid      uuid                                    , " +
                 " kilde                 varchar(255)                            , " +
                 " esdhreference         varchar(255)                            , " +
                 " journalnummer         varchar(255)                             )";
