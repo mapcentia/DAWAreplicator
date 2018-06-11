@@ -59,7 +59,7 @@ final class AdresserEvent extends Stream {
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
         PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, oprettet=?, aendret=?," +
-                "ikrafttraedelsesdato=?, etage=?, doer=?, adgangsadresseid=?, kilde=?, esdhreference=?, journalnummer=?  WHERE id=?");
+                "ikrafttraedelsesdato=?, adgangsadresseid=?, etage=?, doer=?, kilde=?, esdhreference=?, journalnummer=?  WHERE id=?");
 
         // Execute
         // =======
