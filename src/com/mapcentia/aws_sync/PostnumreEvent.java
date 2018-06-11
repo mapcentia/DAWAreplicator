@@ -73,9 +73,9 @@ final class PostnumreEvent extends Stream {
                     cInsert++;
                     break;
                 case "update":
-                    pstmtUpdate.setString(n + 1, item.data.navn); // navn
+                    pstmtUpdate.setString(n + 1, item.data.nr); // nr
+                    pstmtUpdate.setString(++n + 1, item.data.navn); // navn
                     pstmtUpdate.setBoolean(++n + 1, Boolean.valueOf(item.data.stormodtager)); // stormodtager
-                    pstmtUpdate.setString(++n + 1, item.data.nr); // nr
                     pstmtUpdate.executeUpdate();
                     cUpdate++;
                     break;
