@@ -74,10 +74,10 @@ final class AdresserEvent extends Stream {
                     pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
                     pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
                     pstmtInsert.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
+                    pstmtInsert.setObject(++n + 1, (item.data.adgangsadresseid != null) ? UUID.fromString(item.data.adgangsadresseid) : null); // adgangsadresseid
                     pstmtInsert.setString(++n + 1, (item.data.etage != null) ? item.data.etage : null); // etage
                     pstmtInsert.setString(++n + 1, (item.data.dør != null) ? item.data.dør : null); // doer
-                    pstmtInsert.setObject(++n + 1, (item.data.adgangsadresseid != null) ? UUID.fromString(item.data.adgangsadresseid) : null); // journalnummer
-                    pstmtInsert.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // journalnummer
+                    pstmtInsert.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // kilde
                     pstmtInsert.setString(++n + 1, (item.data.esdhreference != null) ? item.data.esdhreference : null); // esdhreference
                     pstmtInsert.setString(++n + 1, (item.data.journalnummer != null) ? item.data.journalnummer : null); // journalnummer
                     pstmtInsert.executeUpdate();
@@ -89,10 +89,10 @@ final class AdresserEvent extends Stream {
                     pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
                     pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
                     pstmtUpdate.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
+                    pstmtUpdate.setObject(++n + 1, (item.data.adgangsadresseid != null) ? UUID.fromString(item.data.adgangsadresseid) : null); // adgangsadresseid
                     pstmtUpdate.setString(++n + 1, (item.data.etage != null) ? item.data.etage : null); // etage
                     pstmtUpdate.setString(++n + 1, (item.data.dør != null) ? item.data.dør : null); // doer
-                    pstmtUpdate.setObject(++n + 1, (item.data.adgangsadresseid != null) ? UUID.fromString(item.data.adgangsadresseid) : null); // journalnummer
-                    pstmtUpdate.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // journalnummer
+                    pstmtUpdate.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // kilde
                     pstmtUpdate.setString(++n + 1, (item.data.esdhreference != null) ? item.data.esdhreference : null); // esdhreference
                     pstmtUpdate.setString(++n + 1, (item.data.journalnummer != null) ? item.data.journalnummer : null); // journalnummer
                     pstmtUpdate.setObject(++n + 1, UUID.fromString(item.data.id)); // id
