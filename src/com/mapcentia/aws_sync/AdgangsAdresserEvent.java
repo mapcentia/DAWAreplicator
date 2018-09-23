@@ -60,9 +60,10 @@ final class AdgangsAdresserEvent extends Stream {
 
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
         PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, oprettet=?, aendret=?," +
-                "ikrafttraedelsesdato=?,  ejerlavkode=?, matrikelnr=?, esrejendomsnr=?, adgangspunktid=?, etrs89koordinat_oest=?, etrs89koordinat_nord=?, hoejde=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
-                "tekstretning=?, esdhreference=?, journalnummer=?, adressepunktaendringsdato=?, the_geom=? WHERE id=?");
+        PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, oprettet=?, aendret=?," +
+                "ikrafttraedelsesdato=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, ejerlavkode=?, matrikelnr=?, esrejendomsnr=?," + "" +
+                " etrs89koordinat_oest=?, etrs89koordinat_nord=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +
+                "tekstretning=?, adressepunktaendringsdato=?, esdhreference=?, journalnummer=?, hoejde=?, adgangspunktid=?,the_geom=? WHERE id=?");
 
         // Execute
         // =======
@@ -74,30 +75,33 @@ final class AdgangsAdresserEvent extends Stream {
                     //System.out.println(item.operation);
                     pstmtInsert.setObject(n + 1, item.data.id); // id
                     pstmtInsert.setInt(++n + 1, item.data.status); // status
+                    pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
+                    pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
+                    pstmtInsert.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
                     pstmtInsert.setString(++n + 1, (item.data.kommunekode != null) ? item.data.kommunekode : null); // kommunekode
                     pstmtInsert.setString(++n + 1, (item.data.vejkode != null) ? item.data.vejkode : null); // vejkode
                     pstmtInsert.setString(++n + 1, (item.data.husnr != null) ? item.data.husnr : null); // husnr
                     pstmtInsert.setString(++n + 1, (item.data.supplerendebynavn != null) ? item.data.supplerendebynavn : null); // supplerendebynavn
                     pstmtInsert.setString(++n + 1, (item.data.postnr != null) ? item.data.postnr : null); // postnr
-                    pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
-                    pstmtInsert.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
-                    pstmtInsert.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
+
                     pstmtInsert.setString(++n + 1, (item.data.ejerlavkode != null) ? item.data.ejerlavkode : null); // ejerlavkode
                     pstmtInsert.setString(++n + 1, (item.data.matrikelnr != null) ? item.data.matrikelnr : null); // matrikelnr
                     pstmtInsert.setString(++n + 1, (item.data.esrejendomsnr != null) ? item.data.esrejendomsnr : null); // esrejendomsnr
-                    pstmtInsert.setObject(++n + 1, (item.data.adgangspunktid != null) ? UUID.fromString(item.data.adgangspunktid) : null); // adgangspunktid
                     pstmtInsert.setFloat(++n + 1, (item.data.etrs89koordinat_øst != null) ? Float.valueOf(item.data.etrs89koordinat_øst) : 0); // etrs89koordinat_oest
                     pstmtInsert.setFloat(++n + 1, (item.data.etrs89koordinat_nord != null) ? Float.valueOf(item.data.etrs89koordinat_nord) : 0); // etrs89koordinat_nord
-                    pstmtInsert.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde
                     pstmtInsert.setString(++n + 1, (item.data.nøjagtighed != null) ? item.data.nøjagtighed : null); // noejagtighed
                     pstmtInsert.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // kilde
                     pstmtInsert.setString(++n + 1, (item.data.husnummerkilde != null) ? item.data.husnummerkilde : null); // husnummerkilde
                     // Start to get out of bound
                     pstmtInsert.setString(++n + 1, (item.data.tekniskstandard != null) ? item.data.tekniskstandard : null); // tekniskstandard
                     pstmtInsert.setString(++n + 1, (item.data.tekstretning != null) ? item.data.tekstretning : null); // tekstretning
+                    pstmtInsert.setTimestamp(++n + 1, (item.data.adressepunktændringsdato != null) ? java.sql.Timestamp.valueOf(item.data.adressepunktændringsdato.replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
+
                     pstmtInsert.setString(++n + 1, (item.data.esdhreference != null) ? item.data.esdhreference : null); // esdhreference
                     pstmtInsert.setString(++n + 1, (item.data.journalnummer != null) ? item.data.journalnummer : null); // journalnummer
-                    pstmtInsert.setTimestamp(++n + 1, (item.data.adressepunktændringsdato != null) ? java.sql.Timestamp.valueOf(item.data.adressepunktændringsdato.replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
+                    pstmtInsert.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde
+                    pstmtInsert.setObject(++n + 1, (item.data.adgangspunktid != null) ? UUID.fromString(item.data.adgangspunktid) : null); // adgangspunktid
+
                     // Create geometry
                     if (item.data.etrs89koordinat_øst != null && item.data.etrs89koordinat_nord != null) {
                         Point point = new Point();
@@ -115,30 +119,34 @@ final class AdgangsAdresserEvent extends Stream {
                 case "update":
                     //System.out.println(item.operation);
                     pstmtUpdate.setInt(n + 1, item.data.status); // status
+                    pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
+                    pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
+                    pstmtUpdate.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
                     pstmtUpdate.setString(++n + 1, (item.data.kommunekode != null) ? item.data.kommunekode : null); // kommunekode
                     pstmtUpdate.setString(++n + 1, (item.data.vejkode != null) ? item.data.vejkode : null); // vejkode
                     pstmtUpdate.setString(++n + 1, (item.data.husnr != null) ? item.data.husnr : null); // husnr
                     pstmtUpdate.setString(++n + 1, (item.data.supplerendebynavn != null) ? item.data.supplerendebynavn : null); // supplerendebynavn
                     pstmtUpdate.setString(++n + 1, (item.data.postnr != null) ? item.data.postnr : null); // postnr
-                    pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", ""))); // oprettet
-                    pstmtUpdate.setTimestamp(++n + 1, java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", ""))); // aendret
-                    pstmtUpdate.setTimestamp(++n + 1, (item.data.ikrafttrædelsesdato != null) ? java.sql.Timestamp.valueOf(item.data.ikrafttrædelsesdato.replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
+
+
                     pstmtUpdate.setString(++n + 1, (item.data.ejerlavkode != null) ? item.data.ejerlavkode : null); // ejerlavkode
                     pstmtUpdate.setString(++n + 1, (item.data.matrikelnr != null) ? item.data.matrikelnr : null); // matrikelnr
                     pstmtUpdate.setString(++n + 1, (item.data.esrejendomsnr != null) ? item.data.esrejendomsnr : null); // esrejendomsnr
-                    pstmtUpdate.setObject(++n + 1, (item.data.adgangspunktid != null) ?  UUID.fromString(item.data.adgangspunktid)  : null); // adgangspunktid
                     pstmtUpdate.setFloat(++n + 1, (item.data.etrs89koordinat_øst != null) ? Float.valueOf(item.data.etrs89koordinat_øst) : 0); // etrs89koordinat_oest
                     pstmtUpdate.setFloat(++n + 1, (item.data.etrs89koordinat_nord != null) ? Float.valueOf(item.data.etrs89koordinat_nord) : 0); // etrs89koordinat_nord
-                    pstmtUpdate.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde
                     pstmtUpdate.setString(++n + 1, (item.data.nøjagtighed != null) ? item.data.nøjagtighed : null); // noejagtighed
                     pstmtUpdate.setString(++n + 1, (item.data.kilde != null) ? item.data.kilde : null); // kilde
                     pstmtUpdate.setString(++n + 1, (item.data.husnummerkilde != null) ? item.data.husnummerkilde : null); // husnummerkilde
                     // Start to get out of bound
                     pstmtUpdate.setString(++n + 1, (item.data.tekniskstandard != null) ? item.data.tekniskstandard : null); // tekniskstandard
                     pstmtUpdate.setString(++n + 1, (item.data.tekstretning != null) ? item.data.tekstretning : null); // tekstretning
+                    pstmtUpdate.setTimestamp(++n + 1, (item.data.adressepunktændringsdato != null) ? java.sql.Timestamp.valueOf(item.data.adressepunktændringsdato.replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
+
                     pstmtUpdate.setString(++n + 1, (item.data.esdhreference != null) ? item.data.esdhreference : null); // esdhreference
                     pstmtUpdate.setString(++n + 1, (item.data.journalnummer != null) ? item.data.journalnummer : null); // journalnummer
-                    pstmtUpdate.setTimestamp(++n + 1, (item.data.adressepunktændringsdato != null) ? java.sql.Timestamp.valueOf(item.data.adressepunktændringsdato.replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
+                    pstmtUpdate.setFloat(++n + 1, (item.data.højde != null) ? Float.valueOf(item.data.højde) : 0); // hoejde
+                    pstmtUpdate.setObject(++n + 1, (item.data.adgangspunktid != null) ?  UUID.fromString(item.data.adgangspunktid)  : null); // adgangspunktid
+
                     // Create geometry
                     if (item.data.etrs89koordinat_øst != null && item.data.etrs89koordinat_nord != null) {
                         Point point = new Point();

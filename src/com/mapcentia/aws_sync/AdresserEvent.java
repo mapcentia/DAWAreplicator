@@ -149,6 +149,7 @@ final class AdresserEvent extends Stream {
         AdresserEvent.AdresserObj.DataObj data;
 
         /**
+         *
          * @param operation
          * @param tidspunkt
          * @param sekvensnummer
