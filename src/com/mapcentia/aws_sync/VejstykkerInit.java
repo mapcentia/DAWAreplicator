@@ -44,7 +44,10 @@ final class VejstykkerInit extends Stream {
                 continue;
             }
             n = 0;
-            String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Spilt csv line
+            System.out.print(inputLine);
+            // Hack. Dar has added id in the beginning. Removing it.
+            String[] arrOld = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Spilt csv line
+            String[] arr = Arrays.copyOfRange(arrOld, 1, arrOld.length);
             System.out.print("\rIndsætter vejstykker... " + lineCount);
             System.out.flush();
 

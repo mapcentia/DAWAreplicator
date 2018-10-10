@@ -56,7 +56,7 @@ final class VejstykkerEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (kommunekode, kode, oprettet, aendret, navn, adresseringsnavn) VALUES(?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET kommunekode=?, kode=?, oprettet=?, aendret=?, navn=?, adresseringsnavn=? WHERE kode=? AND kommunekode=?");
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=? AND kommunekode=?");
 
