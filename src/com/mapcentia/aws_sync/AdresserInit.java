@@ -31,7 +31,7 @@ final class AdresserInit extends Stream {
 
         Connection c = Connect.open();
         c.setAutoCommit(false);
-        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmt = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         boolean first = true;
         int n;
         int lineCount = 0;
@@ -44,15 +44,15 @@ final class AdresserInit extends Stream {
             n = 0;
             String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             System.out.print("\rIndsætter adresser... " + lineCount);
+
             System.out.flush();
 
-            pstmt.setObject(n + 1, UUID.fromString(arr[n]), Types.OTHER); // id
-            pstmt.setInt(++n + 1, Integer.valueOf(arr[n])); // status
+            pstmt.setInt(n + 1, Integer.valueOf(arr[n])); // status
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // oprettet
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // aendret
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
-            pstmt.setObject(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // adgangsadresseid
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // etage
+            pstmt.setObject(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // adgangsadresseid
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // doer
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // kilde
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // esdhreference
@@ -72,13 +72,12 @@ final class AdresserInit extends Stream {
      */
     private void createTabel(String rel) throws Exception {
         String sql = "CREATE TABLE " + rel + " " +
-                "(id                    uuid            PRIMARY KEY     NOT NULL, " +
-                " status                int                                     , " +
+                " (status                int                                     , " +
                 " oprettet              timestamp                               , " +
                 " aendret               timestamp                               , " +
                 " ikrafttraedelsesdato  timestamp                               , " +
-                " adgangsadresseid      uuid                                    , " +
                 " etage                 varchar(255)                            , " +
+                " adgangsadresseid      uuid           PRIMARY KEY      NOT NULL, " +
                 " doer                  varchar(255)                            , " +
                 " kilde                 varchar(255)                            , " +
                 " esdhreference         varchar(255)                            , " +
