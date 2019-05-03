@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.sql.*;
-import java.util.Arrays;
+import java.util.UUID;
 
 /**
  * Created by mh on 24/10/16.
@@ -45,17 +45,18 @@ final class VejstykkerInit extends Stream {
             }
             n = 0;
             // Hack. Dar has added id in the beginning. Removing it.
-            String[] arrOld = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Spilt csv line
-            String[] arr = Arrays.copyOfRange(arrOld, 1, arrOld.length);
+            String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Spilt csv line
+
             System.out.print("\rIndsætter vejstykker... " + lineCount);
             System.out.flush();
 
-            pstmt.setString(n + 1, arr[n]); // kommunekode
+            pstmt.setObject(n + 1, UUID.fromString(arr[n]), Types.OTHER); // id
+            pstmt.setString(++n + 1, arr[n]); // kommunekode
             pstmt.setString(++n + 1, arr[n]); // kode
+            pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // navn
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // oprettet
             pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // aendret
-            pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // navn
-            pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // adresseringsnavn
+            //pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // adresseringsnavn
             pstmt.executeUpdate();
             lineCount++;
         }
@@ -70,11 +71,12 @@ final class VejstykkerInit extends Stream {
      */
     private void createTabel(String rel) throws Exception {
         String sql = "CREATE TABLE " + rel + " " +
-                "(kommunekode       varchar(255)                   NOT NULL, " +
+                "(id                UUID    PRIMARY KEY    NOT NULL, " +
+                " kommunekode       varchar(255)                   NOT NULL, " +
                 " kode              varchar(255)                   NOT NULL, " +
+                " navn              varchar(255)                           , " +
                 " oprettet          timestamp                              , " +
                 " aendret           timestamp                              , " +
-                " navn              varchar(255)                           , " +
                 " adresseringsnavn  varchar(255)                            ) ";
 
         Connect connect = new Connect();
