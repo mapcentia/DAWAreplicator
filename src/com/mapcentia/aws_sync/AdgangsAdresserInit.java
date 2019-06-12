@@ -41,45 +41,43 @@ final class AdgangsAdresserInit extends Stream {
 
         while ((inputLine = in.readLine()) != null) {
             if (first) {
+                //System.out.print(inputLine + "\n");
                 first = false;
                 continue;
             }
             n = 0;
             String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
             System.out.print("\rIndsætter adgangsadresser... " + lineCount);
+            //System.out.print(inputLine + "\n");
             System.out.flush();
 
-            pstmt.setInt(n + 1, Integer.valueOf(arr[n])); // status
-            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // kilde
+            pstmt.setObject(n + 1, UUID.fromString(arr[n]), Types.OTHER); // id
+            pstmt.setInt(++n + 1, Integer.valueOf(arr[n])); // status
             pstmt.setTimestamp(++n + 1, Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", ""))); // oprettet
             pstmt.setTimestamp(++n + 1, Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", ""))); // aendret
             pstmt.setTimestamp(++n + 1, (arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // ikrafttraedelsesdato
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // kommunekode
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // vejkode
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // husnr
-            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // postnr
-            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_oest
-            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_nord
-            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // esrejendomsnr
-            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // noejagtighed
-            pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
-            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // hoejde
-            pstmt.setObject(++n + 1, null); // supplerendebynavn_dagi_id
-            pstmt.setObject(++n + 1, UUID.fromString(arr[n]), Types.OTHER); // id
-
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // supplerendebynavn
+            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // postnr
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // ejerlavkode
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // matrikelnr
-
+            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // esrejendomsnr
+            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_oest
+            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // etrs89koordinat_nord
+            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // noejagtighed
+            pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // kilde
             pstmt.setString(++n + 1, (arr[n].length() > 0) ? arr[n] : null); // husnummerkilde
-
             // Start to get out of bound and we check length of array
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // tekniskstandard
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // tekstretning
-
+            pstmt.setTimestamp(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? Timestamp.valueOf(arr[n].replace("T", " ").replace("Z", "")) : null); // adressepunktaendringsdato
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // esdhreference
             pstmt.setString(++n + 1, ((arr.length > n) && arr[n].length() > 0) ? arr[n] : null); // journalnummer
+            pstmt.setFloat(++n + 1, (arr[n].length() > 0) ? Float.valueOf(arr[n]) : 0); // hoejde
             pstmt.setObject(++n + 1, (arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // adgangspunktid
+            pstmt.setObject(++n + 1, null); // supplerendebynavn_dagi_id
             pstmt.setObject(++n + 1, (arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // vejpunkt_id
             pstmt.setObject(++n + 1, (arr[n].length() > 0) ? UUID.fromString(arr[n]) : null, Types.OTHER); // navngivenvej_id
 
@@ -109,36 +107,34 @@ final class AdgangsAdresserInit extends Stream {
      */
     private void createTabel(String rel) throws Exception {
         String sql = "CREATE TABLE " + rel + " " +
-                "(status                    int                                     , " +
-                " kilde                     varchar(255)                            , " +
+                "(id                UUID            PRIMARY KEY    NOT NULL, " +
+                " status                    int                                     , " +
                 " oprettet                  timestamp                               , " +
                 " aendret                   timestamp                               , " +
                 " ikrafttraedelsesdato      timestamp                               , " +
                 " kommunekode               varchar(255)                            , " +
                 " vejkode                   varchar(255)                            , " +
                 " husnr                     varchar(255)                            , " +
+                " supplerendebynavn         varchar(255)                            , " +
                 " postnr                    varchar(255)                            , " +
+                " ejerlavkode         varchar(255)                                  , " +
+                " matrikelnr         varchar(255)                                   , " +
+                " esrejendomsnr             varchar(255)                            , " +
                 " etrs89koordinat_oest      float                                   , " +
                 " etrs89koordinat_nord      float                                   , " +
-                " esrejendomsnr             varchar(255)                            , " +
                 " noejagtighed              varchar(255)                            , " +
-                " adressepunktaendringsdato timestamp                               , " +
-                " hoejde                    float                                   , " +
-                " supplerendebynavn_dagi_id         UUID                            , " +
-                " id         UUID                            , " +
-                " supplerendebynavn         varchar(255)                            , " +
-                " ejerlavkode         varchar(255)                            , " +
-                " matrikelnr         varchar(255)                            , " +
-
+                " kilde                     varchar(255)                            , " +
                 " husnummerkilde            varchar(255)                            , " +
                 " tekniskstandard           varchar(255)                            , " +
                 " tekstretning              varchar(255)                            , " +
+                " adressepunktaendringsdato timestamp                               , " +
                 " esdhreference             varchar(255)                            , " +
                 " journalnummer             varchar(255)                            , " +
+                " hoejde                    float                                   , " +
                 " adgangspunktid            uuid                                    , " +
+                " supplerendebynavn_dagi_id         UUID                            , " +
                 " vejpunkt_id            uuid                                    , " +
                 " navngivenvej_id            uuid                                    , " +
-
                 " the_geom                  geometry('Point', 25832)                 )";
 
         Connection c = Connect.open();
