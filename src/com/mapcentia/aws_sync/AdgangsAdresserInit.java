@@ -83,10 +83,10 @@ final class AdgangsAdresserInit extends Stream {
 
 
             // Create geometry
-            if (arr[9].length() > 0 && arr[10].length() > 0) {
+            if (arr[13].length() > 0 && arr[14].length() > 0) {
                 Point point = new Point();
-                point.setX(Float.valueOf(arr[9]));
-                point.setY(Float.valueOf(arr[10]));
+                point.setX(Float.valueOf(arr[13]));
+                point.setY(Float.valueOf(arr[14]));
                 point.setSrid(25832);
                 PGgeometry geom = new PGgeometry(point);
                 pstmt.setObject(++n + 1, geom, Types.OTHER); // the_geom
