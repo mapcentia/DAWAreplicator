@@ -68,7 +68,7 @@ final class VejstykkerEvent extends Stream {
             int n = 0;
             switch (item.operation) {
                 case "insert":
-                    System.out.println(item.operation);
+//                    System.out.println(item.operation);
                     pstmtInsert.setObject(n + 1, item.data.id); // id
                     pstmtInsert.setString(++n + 1, item.data.kommunekode); // kommunekode
                     pstmtInsert.setString(++n + 1, item.data.kode); // kode
@@ -82,7 +82,7 @@ final class VejstykkerEvent extends Stream {
                     cInsert++;
                     break;
                 case "update":
-                    System.out.println(item.operation);
+//                    System.out.println(item.operation);
                     pstmtUpdate.setString(n + 1, item.data.kommunekode); // kommunekode
                     pstmtUpdate.setString(++n + 1, item.data.kode); // kode
                     pstmtUpdate.setTimestamp(++n + 1, (item.data.oprettet != null) ? java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", "")) : null); // oprettet
