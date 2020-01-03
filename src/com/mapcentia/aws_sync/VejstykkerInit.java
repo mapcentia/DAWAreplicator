@@ -45,7 +45,6 @@ final class VejstykkerInit extends Stream {
                 continue;
             }
             n = 0;
-            // Hack. Dar has added id in the beginning. Removing it.
             String[] arr = inputLine.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)"); // Spilt csv line
 
             System.out.print("\rIndsætter vejstykker... " + lineCount);

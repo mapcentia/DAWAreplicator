@@ -54,7 +54,7 @@ final class EjerlavEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (kode,navn) VALUES(?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET navn=? WHERE kode=?");
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=?");
 

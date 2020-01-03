@@ -15,8 +15,10 @@ import java.sql.PreparedStatement;
 final class PostnumreEvent extends Stream {
 
     /**
+     *
      * @param sekvensNummerFra
      * @param sekvensNummerTil
+     * @param c
      * @return
      * @throws Exception
      */
@@ -54,7 +56,7 @@ final class PostnumreEvent extends Stream {
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (nr,navn,stormodtager) VALUES(?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET nr=?, navn=?, stormodtager=? WHERE nr=?");
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM  " + rel + " WHERE nr=?");
 

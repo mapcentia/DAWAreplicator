@@ -59,7 +59,7 @@ final class AdgangsAdresserEvent extends Stream {
         // ==================
 
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE id=?");
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (id,status,oprettet,aendret,ikrafttraedelsesdato,kommunekode,vejkode,husnr,supplerendebynavn,postnr,ejerlavkode,matrikelnr,esrejendomsnr,etrs89koordinat_oest,etrs89koordinat_nord,noejagtighed,kilde,husnummerkilde,tekniskstandard,tekstretning,adressepunktaendringsdato,esdhreference,journalnummer,hoejde,adgangspunktid,the_geom) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET status=?, oprettet=?, aendret=?," +
                 "ikrafttraedelsesdato=?, kommunekode=?, vejkode=?, husnr=?, supplerendebynavn=?, postnr=?, ejerlavkode=?, matrikelnr=?, esrejendomsnr=?," + "" +
                 " etrs89koordinat_oest=?, etrs89koordinat_nord=?, noejagtighed=?, kilde=?, husnummerkilde=?, tekniskstandard=?," +

@@ -8,6 +8,7 @@ import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.UUID;
 
 /**
@@ -50,13 +51,13 @@ final class VejstykkerEvent extends Stream {
         // =========================
 
         Gson g = new Gson();
-        //System.out.println(response.toString());
+//        System.out.println(response.toString());
         VejstykkerEvent.VejstykkerObj[] Adresser = g.fromJson(response.toString(), VejstykkerEvent.VejstykkerObj[].class);
 
         // Prepare statements
         // ==================
 
-        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (kommunekode, kode, oprettet, aendret, navn, adresseringsnavn) VALUES(?, ?, ?, ?, ?, ?)");
+        PreparedStatement pstmtInsert = c.prepareStatement("INSERT INTO " + rel + " (id, kommunekode, kode, oprettet, aendret, navn, adresseringsnavn) VALUES(?, ?, ?, ?, ?, ?, ?)");
         PreparedStatement pstmtUpdate = c.prepareStatement("UPDATE " + rel + " SET kommunekode=?, kode=?, oprettet=?, aendret=?, navn=?, adresseringsnavn=? WHERE kode=? AND kommunekode=?");
         PreparedStatement pstmtDelete = c.prepareStatement("DELETE FROM " + rel + " WHERE kode=? AND kommunekode=?");
 
@@ -67,8 +68,9 @@ final class VejstykkerEvent extends Stream {
             int n = 0;
             switch (item.operation) {
                 case "insert":
-                    //System.out.println(item.operation);
-                    pstmtInsert.setString(n + 1, item.data.kommunekode); // kommunekode
+                    System.out.println(item.operation);
+                    pstmtInsert.setObject(n + 1, item.data.id); // id
+                    pstmtInsert.setString(++n + 1, item.data.kommunekode); // kommunekode
                     pstmtInsert.setString(++n + 1, item.data.kode); // kode
                     pstmtInsert.setTimestamp(++n + 1, (item.data.oprettet != null) ? java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", "")) : null); // oprettet
                     pstmtInsert.setTimestamp(++n + 1, (item.data.ændret != null) ? java.sql.Timestamp.valueOf(item.data.ændret.replace("T", " ").replace("Z", "")) : null); // aendret
@@ -80,7 +82,7 @@ final class VejstykkerEvent extends Stream {
                     cInsert++;
                     break;
                 case "update":
-                    //System.out.println(item.operation);
+                    System.out.println(item.operation);
                     pstmtUpdate.setString(n + 1, item.data.kommunekode); // kommunekode
                     pstmtUpdate.setString(++n + 1, item.data.kode); // kode
                     pstmtUpdate.setTimestamp(++n + 1, (item.data.oprettet != null) ? java.sql.Timestamp.valueOf(item.data.oprettet.replace("T", " ").replace("Z", "")) : null); // oprettet
@@ -123,6 +125,7 @@ final class VejstykkerEvent extends Stream {
          *
          */
         class DataObj {
+            UUID id;
             String kode;
             String kommunekode;
             String navn;
