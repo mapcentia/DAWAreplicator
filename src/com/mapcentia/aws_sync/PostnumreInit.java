@@ -3,6 +3,7 @@ package com.mapcentia.aws_sync;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Arrays;
 
@@ -28,7 +29,7 @@ final class PostnumreInit extends Stream {
         //System.exit(0);
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/postnumre?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
         Connect connect = new Connect();
         Connection c = connect.open();

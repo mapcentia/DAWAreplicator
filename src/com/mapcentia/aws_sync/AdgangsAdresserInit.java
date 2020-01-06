@@ -3,6 +3,7 @@ package com.mapcentia.aws_sync;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.UUID;
 
@@ -29,7 +30,7 @@ final class AdgangsAdresserInit extends Stream {
 
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/adgangsadresser?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
         Connection c = Connect.open();
         c.setAutoCommit(false);

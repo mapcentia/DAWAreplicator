@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.sql.*;
 import java.util.UUID;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Created by mh on 24/10/16.
@@ -27,7 +28,7 @@ final class VejstykkerInit extends Stream {
         }
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/vejstykker?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
         Connect connect = new Connect();
         Connection c = connect.open();
@@ -41,7 +42,7 @@ final class VejstykkerInit extends Stream {
         while ((inputLine = in.readLine()) != null) {
             if (first) {
                 first = false;
-                System.out.print(inputLine);
+//                System.out.print(inputLine);
                 continue;
             }
             n = 0;

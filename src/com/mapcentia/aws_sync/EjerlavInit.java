@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.UUID;
+import java.nio.charset.StandardCharsets;
+
 
 /**
  * Created by mh on 24/10/16.
@@ -31,7 +33,7 @@ final class EjerlavInit extends Stream {
 
         HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/ejerlav?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 
         Connection c = Connect.open();
         c.setAutoCommit(false);
