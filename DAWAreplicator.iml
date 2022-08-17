@@ -7,7 +7,30 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="DAWAreplicator" level="project" />
-    <orderEntry type="library" name="DAWAreplicator" level="project" />
+    <orderEntry type="module-library" exported="">
+      <library type="repository">
+        <properties maven-id="com.google.code.gson:gson:2.8.0" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/gson-2.8.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library type="repository">
+        <properties maven-id="org.yaml:snakeyaml:1.18" />
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/snakeyaml-1.18.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="DAWAreplicator" level="project" />
+    <orderEntry type="library" exported="" name="net.postgis.jdbc" level="project" />
+    <orderEntry type="library" exported="" name="google.code.gson" level="project" />
+    <orderEntry type="library" exported="" name="yaml.snakeyaml" level="project" />
+    <orderEntry type="library" name="postgresql" level="project" />
   </component>
 </module>
