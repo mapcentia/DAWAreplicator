@@ -29,7 +29,7 @@ final class AdgangsAdresserEvent extends Stream {
         Configuration configuration = new Configuration();
         String rel = configuration.getSchema() + "." + "adgangsadresser";
 
-        String url = "http://dawa.aws.dk/replikering/AdgangsAdresser/haendelser?sekvensnummerfra=" + (sekvensNummerFra +1) + "&sekvensnummertil=" + sekvensNummerTil;
+        String url = "https://dawa.aws.dk/replikering/AdgangsAdresser/haendelser?sekvensnummerfra=" + (sekvensNummerFra +1) + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);

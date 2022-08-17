@@ -27,7 +27,7 @@ final class PostnumreInit extends Stream {
 
         }
         //System.exit(0);
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/postnumre?sekvensnummer=" + sekvensNummer + "&format=csv");
+        HttpURLConnection con = this.start("https://dawa.aws.dk/replikering/postnumre?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 

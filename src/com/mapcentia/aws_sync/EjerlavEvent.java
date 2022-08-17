@@ -25,7 +25,7 @@ final class EjerlavEvent extends Stream {
         Configuration configuration = new Configuration();
         String rel = configuration.getSchema() + "." + "ejerlav";
 
-        String url = "http://dawa.aws.dk/replikering/ejerlav/haendelser?sekvensnummerfra=" + sekvensNummerFra + "&sekvensnummertil=" + sekvensNummerTil;
+        String url = "https://dawa.aws.dk/replikering/ejerlav/haendelser?sekvensnummerfra=" + sekvensNummerFra + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);

@@ -32,7 +32,7 @@ final class Sekvens extends Stream {
 
         }
 
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/senestesekvensnummer");
+        HttpURLConnection con = this.start("https://dawa.aws.dk/replikering/senestesekvensnummer");
         String inputLine;
         StringBuffer response = new StringBuffer();
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));

@@ -27,7 +27,7 @@ final class AdresserInit extends Stream {
 
         }
 
-        HttpURLConnection con = this.start("http://dawa.aws.dk/replikering/adresser?sekvensnummer=" + sekvensNummer + "&format=csv");
+        HttpURLConnection con = this.start("https://dawa.aws.dk/replikering/adresser?sekvensnummer=" + sekvensNummer + "&format=csv");
         String inputLine;
         BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8));
 

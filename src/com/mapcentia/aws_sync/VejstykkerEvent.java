@@ -28,7 +28,7 @@ final class VejstykkerEvent extends Stream {
         Configuration configuration = new Configuration();
         String rel = configuration.getSchema() + "." + "vejstykker";
 
-        String url = "http://dawa.aws.dk/replikering/vejstykker/haendelser?sekvensnummerfra=" + (sekvensNummerFra + 1) + "&sekvensnummertil=" + sekvensNummerTil;
+        String url = "https://dawa.aws.dk/replikering/vejstykker/haendelser?sekvensnummerfra=" + (sekvensNummerFra + 1) + "&sekvensnummertil=" + sekvensNummerTil;
         System.out.println(url);
 
         HttpURLConnection con = this.start(url);
